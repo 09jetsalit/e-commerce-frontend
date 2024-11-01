@@ -12,6 +12,7 @@ import Product from "../pages/admin/Product";
 import Manage from "../pages/admin/Manage";
 import LayoutUser from "../layouts/LayoutUser";
 import HomeUser from "../pages/user/HomeUser";
+import Cart from "../pages/Cart";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "shop", element: <Shop /> },
+      { path: "cart", element: <Cart /> },
       { path: "checkout", element: <Checkout /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
