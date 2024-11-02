@@ -1,11 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useEcomStore from "../../store/e-com-store";
 
+interface form {
+  email: string,
+  password: string
+}
 
 const Login = () => {
 
-  const [form, setForm] = useState({
+  const actionLogin = useEcomStore((state) => state.actionLogin)
+
+  const [form, setForm] = useState<form>({
     email:"",
     password:"",
   })
@@ -21,17 +28,13 @@ const Login = () => {
   const handleSubmit = async () => {
     // console.log(form);    
     try {
-      const response = await axios.post('http://localhost:3000/api/login',form)
-      // console.log(response);
-      toast.success(response.data.message)
+      const res = await actionLogin(form)
+      console.log(res);
       
-    } catch (err:any) {
-      const errMsg = err.response?.data?.message
-      toast.error('Email or Password Invalid')
-      console.log(err);
-      
+    } catch (err) {
+      const errMsg = err
+      // toast.error()
     }
-    
   }
 
 
