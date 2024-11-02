@@ -34,7 +34,7 @@ const Register = () => {
         form
       );
       // console.log(response);
-      toast.success(response.data.message);
+      toast.success(response?.data?.message);
     } catch (err: any) {
       const errMsg = err.response?.data?.message;
       toast.error(errMsg);

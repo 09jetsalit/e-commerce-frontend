@@ -1,9 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-type Props = {};
-
-const MainNav = (props: Props) => {
+const MainNav = () => {
   return (
     <nav className="bg-green-300">
       <div className="mx-auto px-4">

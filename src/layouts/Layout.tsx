@@ -1,10 +1,8 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import MainNav from "../components/MainNav";
 
-type Props = {};
 
-const Layout = (props: Props) => {
+const Layout = () => {
   return (
     <div>
       <MainNav />
