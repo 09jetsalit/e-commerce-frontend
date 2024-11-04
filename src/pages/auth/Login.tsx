@@ -26,14 +26,30 @@ const Login = () => {
   }
 
   const handleSubmit = async () => {
+    
+    if(!form.email && !form.password){
+      return toast.error("Email and Password is Required")
+    }
+    if(!form.email){
+      return toast.error("Email is Required")
+    }
+    if(!form.password){
+      return toast.error("Password is Required")
+    }
     // console.log(form);    
     try {
-      const res = await actionLogin(form)
-      console.log(res);
+      const res:any = await actionLogin(form)
+      toast.success(res.data?.message)
+      // console.log(res);
+      localStorage.setItem('accessToken', res.data.token);
+      localStorage.setItem('refreshToken', res.data.refreshToken);
       
-    } catch (err) {
-      const errMsg = err
-      // toast.error()
+      
+    } catch (err:any) {
+      // console.log(err.response?.data?.message);
+      
+      const errMsg = err.response?.data?.message;
+      toast.error(errMsg)
     }
   }
 

@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout";
 import Checkout from "../pages/Checkout";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import LayoutAdmn from "../layouts/LayoutAdmn";
+import LayoutAdmin from "../layouts/LayoutAdmin";
 import Dashboard from "../pages/admin/Dashboard";
 import Category from "../pages/admin/Category";
 import Product from "../pages/admin/Product";
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <LayoutAdmn />,
+    element: <LayoutAdmin />,
     children: [
       {index: true, element: <Dashboard />},
       {path: "category", element: <Category />},

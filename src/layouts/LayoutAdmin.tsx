@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 type Props = {}
 
-const LayoutAdmn = (props: Props) => {
+const LayoutAdmin = (props: Props) => {
   return (
     <div>
         <h1>Sidebar</h1>
@@ -14,4 +14,4 @@ const LayoutAdmn = (props: Props) => {
   )
 }
 
-export default LayoutAdmn
+export default LayoutAdmin

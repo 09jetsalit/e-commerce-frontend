@@ -11,6 +11,7 @@ const ecomStore = (setState: any) => ({
   value: null,
   actionLogin: async (form: formLogin) => {
     const res = await axios.post("http://localhost:3000/api/login", form);
+    
     return res;
   },
 });
