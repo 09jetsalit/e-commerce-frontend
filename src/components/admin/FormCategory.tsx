@@ -1,0 +1,93 @@
+import { useEffect, useState } from "react";
+import { createCategory, getCategory, removeCategory } from "../../api/Category";
+import useEcomStore from "../../store/e-com-store";
+import { toast } from "react-toastify";
+
+type Category = {
+  name: string;
+  id: number
+};
+
+const FormCategory = () => {
+  const token: any = useEcomStore((state) => state.token);
+  const [name, setName] = useState<string>("");
+  const [categories, setCategories] = useState<Category[]>([]);
+ 
+
+  useEffect(() => {
+    listCategory(token);
+  }, []);
+
+  const listCategory = async (token: any) => {
+    try {
+      const res = await getCategory(token);
+      // console.log(res);
+      setCategories(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!name) {
+        return toast.warning("Please fill data");
+      }
+      const res = await createCategory(token, { name });
+      // console.log(res);      
+      toast.success(`Add category ${res.data.Category.name} Success`)
+      listCategory(token)
+    } catch (err) {
+      console.log(err);
+      
+    }
+  };
+
+  const handleRemove = async(id: number) => {
+    
+    const categoryToDelete = categories.find((category) => category.id === id);
+    // console.log(id);
+    try {
+      const res = await removeCategory(token, id)
+      // console.log(res);
+      toast.error(`Deleted category ${categoryToDelete?.name} successfully`);
+      listCategory(token)
+      
+    } catch (err) {
+      console.log(err);
+      
+    }
+  }
+
+  return (
+    <div className="container mx-auto bg-white">
+      <h1>management</h1>
+      <form className="my-4" onSubmit={(e) => e.preventDefault()}>
+        <input
+          type="text"
+          className="border"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button className="bg-blue-400" onClick={handleSubmit}>
+          Add category
+        </button>
+      </form>
+
+      <hr />
+      <ul className="list-none">
+        {categories.map((item, index) => (
+          <li key={index} className="flex justify-between my-2">
+            {" "}
+            <span>
+            {item.name}
+            </span>
+            <button onClick={() => handleRemove(item.id)}
+              className="bg-red-500">Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default FormCategory;
