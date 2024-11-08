@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { getCategory } from "../api/Category";
 
 interface FormLogin {
   email: string;
@@ -12,6 +13,7 @@ const ecomStore = (set: any) => ({
   user: null,
   token: null,
   refreshToken: null,
+  categories : [],
   actionLogin: async (form: FormLogin) => {
     try {
       const res = await axios.post("http://localhost:3000/api/login", form);
@@ -29,6 +31,16 @@ const ecomStore = (set: any) => ({
       throw error; // rethrow if you want to handle it in the component
     }
   },
+  listCategory : async (token: any) => {
+    try {
+      const res = await getCategory(token);
+      // console.log(res);
+      set({categories: res.data});
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
 });
 
 const useEcomStore = create(

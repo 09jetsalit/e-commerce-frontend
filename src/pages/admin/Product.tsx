@@ -1,10 +1,12 @@
-import React from 'react'
+import FormProduct from '../../components/admin/FormProduct'
 
 type Props = {}
 
 const Product = (props: Props) => {
   return (
-    <div>Product</div>
+    <div>
+      <FormProduct />
+    </div>
   )
 }
 

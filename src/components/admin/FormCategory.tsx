@@ -11,22 +11,18 @@ type Category = {
 const FormCategory = () => {
   const token: any = useEcomStore((state) => state.token);
   const [name, setName] = useState<string>("");
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]);
+  const categories: Category[] = useEcomStore( (state) => state.categories)
+  const getCategories = useEcomStore( (state) => state.listCategory)
+
+  // console.log(categories);
+  
  
 
   useEffect(() => {
-    listCategory(token);
+    getCategories(token);
   }, []);
 
-  const listCategory = async (token: any) => {
-    try {
-      const res = await getCategory(token);
-      // console.log(res);
-      setCategories(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleSubmit = async () => {
     try {
@@ -36,7 +32,8 @@ const FormCategory = () => {
       const res = await createCategory(token, { name });
       // console.log(res);      
       toast.success(`Add category ${res.data.Category.name} Success`)
-      listCategory(token)
+      setName('')
+      getCategories(token)
     } catch (err) {
       console.log(err);
       
@@ -51,7 +48,7 @@ const FormCategory = () => {
       const res = await removeCategory(token, id)
       // console.log(res);
       toast.error(`Deleted category ${categoryToDelete?.name} successfully`);
-      listCategory(token)
+      getCategories(token)
       
     } catch (err) {
       console.log(err);
@@ -66,6 +63,7 @@ const FormCategory = () => {
         <input
           type="text"
           className="border"
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <button className="bg-blue-400" onClick={handleSubmit}>
