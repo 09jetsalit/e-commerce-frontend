@@ -11,8 +11,8 @@ export const createProduct = async(token: string, form: any) => {
     })
 }
 
-export const listProduct = async(token: string, count = 20) => {
-    return axios.get('http://localhost:3000/api/products'+count, {
+export const listProduct = async(token: string, count: number) => {
+    return axios.get('http://localhost:3000/api/products/'+count, {
         headers: {
             Authorization: `Bearer ${token}`
         }

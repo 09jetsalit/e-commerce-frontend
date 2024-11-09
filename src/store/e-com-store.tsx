@@ -2,6 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getCategory } from "../api/Category";
+import { listProduct } from "../api/Product";
 
 interface FormLogin {
   email: string;
@@ -14,6 +15,7 @@ const ecomStore = (set: any) => ({
   token: null,
   refreshToken: null,
   categories : [],
+  products: [],
   actionLogin: async (form: FormLogin) => {
     try {
       const res = await axios.post("http://localhost:3000/api/login", form);
@@ -40,6 +42,16 @@ const ecomStore = (set: any) => ({
       console.log(error);
     }
   },
+  getProduct : async (token: any, count: number) => {
+    try {
+      const res = await listProduct(token, count);
+      // console.log(res);
+      set({products: res.data});
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  
 
 });
 
