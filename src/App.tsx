@@ -6,9 +6,9 @@ import setupAxiosInterceptors from "./utils/axiosSetup";
 
 const App = () => {
 
-  useEffect(() => {
-    setupAxiosInterceptors();
-  }, [])
+  // useEffect(() => {
+  //   setupAxiosInterceptors();
+  // }, [])
   
   return (
     <>

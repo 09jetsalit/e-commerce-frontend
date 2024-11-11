@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useEcomStore from "../../store/e-com-store";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +8,26 @@ interface form {
   password: string;
 }
 
+// useEffect(() => {
+//   if(token) {
+
+//   }
+// }, [])
+
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const actionLogin = useEcomStore((state) => state.actionLogin);
-  // const user = useEcomStore((state) => state.user);
-  // console.log(user);
+  const token = useEcomStore((state) => state.token);
+  const user = useEcomStore<any>((state) => state.user);
+
+  useEffect(() => {
+    if(token && user.role === 'admin') {
+      navigate('/admin')
+    } else if (token && user.role === 'user') {
+      navigate('/user')
+    }
+  }, [])
+
 
   const [form, setForm] = useState<form>({
     email: "",
@@ -39,19 +54,17 @@ const Login = () => {
     }
     // console.log(form);
     try {
-      const res:any = await actionLogin(form);
+      const res: any = await actionLogin(form);
       toast.success(res.data?.message);
       // console.log(res);
-      const role = res.data.user.role
+      const role = res.data.user.role;
       // console.log(role);
 
-      if(role === 'admin') {
-        navigate('/admin')
+      if (role === "admin") {
+        navigate("/admin");
       } else {
-        navigate('/user')
+        navigate("/user");
       }
-
-            
     } catch (err: any) {
       // console.log(err.response?.data?.message);
 

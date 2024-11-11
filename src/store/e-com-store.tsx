@@ -9,50 +9,57 @@ interface FormLogin {
   password: string;
 }
 
+interface EcomState {
+  user: any;
+  token: string | null;
+  refreshToken: string | null;
+  categories: any[];
+  products: any[];
+  actionLogin: (form: FormLogin) => Promise<any>;
+  listCategory: (token: string) => Promise<void>;
+  getProduct: (token: string, count: number) => Promise<void>;
+  setToken: (token: string) => void;
+  clearAuth: () => void;
+}
 
 const ecomStore = (set: any) => ({
   user: null,
   token: null,
   refreshToken: null,
-  categories : [],
+  categories: [],
   products: [],
   actionLogin: async (form: FormLogin) => {
     try {
       const res = await axios.post("http://localhost:3000/api/login", form);
-      // console.log(res);
-      
       set({
         user: res.data.user,
         token: res.data.token,
         refreshToken: res.data.refreshToken,
       });
-
-      return res
+      return res;
     } catch (error) {
       console.error("Login failed:", error);
-      throw error; // rethrow if you want to handle it in the component
+      throw error;
     }
   },
-  listCategory : async (token: any) => {
+  listCategory: async (token: string) => {
     try {
       const res = await getCategory(token);
-      // console.log(res);
-      set({categories: res.data});
+      set({ categories: res.data });
     } catch (error) {
       console.log(error);
     }
   },
-  getProduct : async (token: any, count: number) => {
+  getProduct: async (token: string, count: number) => {
     try {
       const res = await listProduct(token, count);
-      // console.log(res);
-      set({products: res.data});
+      set({ products: res.data });
     } catch (error) {
       console.log(error);
     }
   },
-  
-
+  setToken: (token: string) => set({ token }),
+  clearAuth: () => set({ token: null, refreshToken: null, user: null }),
 });
 
 const useEcomStore = create(

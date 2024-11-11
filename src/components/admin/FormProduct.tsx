@@ -2,13 +2,23 @@ import { useEffect, useState } from "react";
 import useEcomStore from "../../store/e-com-store";
 import { createProduct } from "../../api/Product";
 import { toast } from "react-toastify";
+import UploadFile from "./UploadFile";
 
-const initialState = {
+type form = {
+  title: string;
+  description: string;
+  price: number;
+  quantity: number;
+  categoryId: number;
+  images: [];
+};
+
+const initialState: form = {
   title: "",
   description: "",
-  price: "",
-  quantity: "",
-  categoryId: "",
+  price: 0,
+  quantity: 0,
+  categoryId: 0,
   images: [],
 };
 
@@ -111,7 +121,7 @@ const FormProduct = () => {
             className="border"
             onChange={handleOnChange}
             required
-            value={form.categoryId}
+            value={form.categoryId || ''}
           >
             <option value="" disabled>
               please select
@@ -126,6 +136,8 @@ const FormProduct = () => {
             ))}
           </select>
           <br />
+          {/* upload file */}
+          <UploadFile form={form} setForm={setForm} />
           <button
             className="bg-blue-500 rounded-md p-1 mt-2"
             onClick={handleSubmit}
@@ -136,45 +148,49 @@ const FormProduct = () => {
           <br />
           <br />
         </form>
-          <table className="table-auto w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 border border-slate-300">ชื่อสินค้า</th>
-                <th className="px-4 py-2 border border-slate-300">รายละเอียดสินค้า</th>
-                <th className="px-4 py-2 border border-slate-300">สต๊อก</th>
-                <th className="px-4 py-2 border border-slate-300">ราคา</th>
-                <th className="px-4 py-2 border border-slate-300">จำนวนที่ขายได้</th>
-                <th className="px-4 py-2 border border-slate-300">อัพเดทเมื่อ</th>
-                <th className="px-4 py-2 border border-slate-300">จัดการ</th>
+        <table className="table-auto w-full border-collapse">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="px-4 py-2 border border-slate-300">ชื่อสินค้า</th>
+              <th className="px-4 py-2 border border-slate-300">
+                รายละเอียดสินค้า
+              </th>
+              <th className="px-4 py-2 border border-slate-300">สต๊อก</th>
+              <th className="px-4 py-2 border border-slate-300">ราคา</th>
+              <th className="px-4 py-2 border border-slate-300">
+                จำนวนที่ขายได้
+              </th>
+              <th className="px-4 py-2 border border-slate-300">อัพเดทเมื่อ</th>
+              <th className="px-4 py-2 border border-slate-300">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((item, index) => (
+              <tr key={index} className="even:bg-gray-100">
+                <td className="px-4 py-2 border text-center">{item.title}</td>
+                <td className="px-4 py-2 border text-center">
+                  {item.description}
+                </td>
+                <td className="px-4 py-2 border text-center">
+                  {item.quantity}
+                </td>
+                <td className="px-4 py-2 border text-center">{item.price}</td>
+                <td className="px-4 py-2 border text-center">{item.sold}</td>
+                <td className="px-4 py-2 border text-center">
+                  {item.updateAt}
+                </td>
+                <td className="px-4 py-2 border text-center">
+                  <button className="bg-red-500 text-white p-1 rounded-md">
+                    ลบ
+                  </button>
+                  <button className="bg-green-500 text-white p-1 rounded-md ml-2">
+                    แก้ไข
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {products.map((item, index) => (
-                <tr key={index} className="even:bg-gray-100">
-                  <td className="px-4 py-2 border text-center">{item.title}</td>
-                  <td className="px-4 py-2 border text-center">
-                    {item.description}
-                  </td>
-                  <td className="px-4 py-2 border text-center">
-                    {item.quantity}
-                  </td>
-                  <td className="px-4 py-2 border text-center">{item.price}</td>
-                  <td className="px-4 py-2 border text-center">{item.sold}</td>
-                  <td className="px-4 py-2 border text-center">
-                    {item.updateAt}
-                  </td>
-                  <td className="px-4 py-2 border text-center">
-                    <button className="bg-red-500 text-white p-1 rounded-md">
-                      ลบ
-                    </button>
-                    <button className="bg-green-500 text-white p-1 rounded-md ml-2">
-                      แก้ไข
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   );
