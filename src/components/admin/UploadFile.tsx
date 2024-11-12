@@ -25,7 +25,7 @@ const Uploadfile = ({ form, setForm }: any) => {
                 // Validate
                 const file = files[i]
                 if (!file.type.startsWith('image/')) {
-                    toast.error(`File ${file.name} บ่แม่นรูป`)
+                    toast.error(`File ${file.name} is not a picture`)
                     continue
                 }
                 // Image Resize 
@@ -40,7 +40,7 @@ const Uploadfile = ({ form, setForm }: any) => {
                         // endpoint Backend
                         uploadFiles(token, data)
                             .then((res) => {
-                                console.log(res)
+                                // console.log(res)
                                 allFiles.push(res.data)
                                 setForm({
                                     ...form,
@@ -61,7 +61,7 @@ const Uploadfile = ({ form, setForm }: any) => {
             }
         }
     }
-    console.log(form)
+    // console.log(form)
 
     const handleDelete = (public_id: any) => {
         const images = form.images
@@ -111,6 +111,7 @@ const Uploadfile = ({ form, setForm }: any) => {
                     onChange={handleOnChange}
                     type='file'
                     name='images'
+                    key={form.images.length} // เปลี่ยน key เมื่อ form.images เปลี่ยนแปลง
                     multiple
                 />
             </div>

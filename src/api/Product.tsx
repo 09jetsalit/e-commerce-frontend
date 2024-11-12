@@ -45,7 +45,7 @@ export const removeProduct = async(token: string, form: any) => {
 
 export const uploadFiles = async (token: any, form: any) => {
     // code
-    console.log('form api frontent', form)
+    // console.log('form api frontent', form)
     return axios.post(
       "http://localhost:3000/api/images",
       {

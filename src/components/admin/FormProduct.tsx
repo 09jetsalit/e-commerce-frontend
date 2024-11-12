@@ -7,8 +7,8 @@ import UploadFile from "./UploadFile";
 type form = {
   title: string;
   description: string;
-  price: number;
-  quantity: number;
+  price: number | '';
+  quantity: number | '';
   categoryId: number;
   images: [];
 };
@@ -16,8 +16,8 @@ type form = {
 const initialState: form = {
   title: "",
   description: "",
-  price: 0,
-  quantity: 0,
+  price: '',
+  quantity: '',
   categoryId: 0,
   images: [],
 };
@@ -49,10 +49,10 @@ const FormProduct = () => {
     // console.log(form);
     try {
       const res = await createProduct(token, form);
-      console.log(res);
+      // console.log(res);
       if (res.status === 200) {
         toast.success("Add Product Success");
-        setForm(initialState);
+        setForm({ ...initialState, images: [] });
       }
     } catch (err) {
       // console.log(err);
@@ -68,6 +68,7 @@ const FormProduct = () => {
         toast.error("Please select category");
       }
     }
+    getProducts(token, 20)
   };
 
   return (
