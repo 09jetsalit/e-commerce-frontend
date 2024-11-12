@@ -1,33 +1,35 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
-import Resizer from "react-image-file-resizer";
-import useEcomStore from "../../store/e-com-store";
-import { uploadFiles } from "../../api/Product";
+// rafce
+import { Key, useState } from 'react'
+import { toast } from 'react-toastify'
+import Resize from 'react-image-file-resizer'
+import { Loader } from 'lucide-react';
+import useEcomStore from '../../store/e-com-store';
+import { removeFiles, uploadFiles } from '../../api/Product';
 
 
-const UploadFile = ({ form, setForm }: any) => {
-    // console.log(form);
-    
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const token = useEcomStore<any>((state) => state.token)
+const Uploadfile = ({ form, setForm }: any) => {
+    // Javascript
+    const token = useEcomStore((state: { token: any }) => state.token)
+    const [isLoading, setIsLoading] = useState(false)
 
-    const handleOnChange = (e: any) => {
+    const handleOnChange = (e: { target: { files: any } }) => {
+        // code
+        setIsLoading(true)
         const files = e.target.files
-        // console.log(files);
-        
-        if(files){
+        if (files) {
             setIsLoading(true)
-            let allFiles = form.images //empty array []
-            for (let i = 0; i<files.length; i++) {
-                // console.log(files[i]);
-                 
-                const file = files[i];
-                if(!file.type.startsWith('image')){
-                    toast.error(`File ${file.name} is not picture`)
-                    continue 
+            let allFiles = form.images  // [] empty array
+            for (let i = 0; i < files.length; i++) {
+                // console.log(files[i])
+
+                // Validate
+                const file = files[i]
+                if (!file.type.startsWith('image/')) {
+                    toast.error(`File ${file.name} บ่แม่นรูป`)
+                    continue
                 }
-                // image resize
-                Resizer.imageFileResizer(
+                // Image Resize 
+                Resize.imageFileResizer(
                     files[i],
                     720,
                     720,
@@ -35,11 +37,9 @@ const UploadFile = ({ form, setForm }: any) => {
                     100,
                     0,
                     (data) => {
-                        // console.log(data);
-                        
                         // endpoint Backend
                         uploadFiles(token, data)
-                            .then((res: any) => {
+                            .then((res) => {
                                 console.log(res)
                                 allFiles.push(res.data)
                                 setForm({
@@ -49,23 +49,74 @@ const UploadFile = ({ form, setForm }: any) => {
                                 setIsLoading(false)
                                 toast.success('Upload image Sucess!!!')
                             })
-                            .catch((err: any) => {
+                            .catch((err) => {
                                 console.log(err)
                                 setIsLoading(false)
                             })
                     },
                     "base64"
                 )
+
+
             }
         }
-        
     }
-  return (
-    <div>
-        <input type="file" name='images'
-        multiple onChange={handleOnChange}/>
-    </div>
-  )
+    console.log(form)
+
+    const handleDelete = (public_id: any) => {
+        const images = form.images
+        removeFiles(token, public_id)
+            .then((res) => {
+                const filterImages = images.filter((item: { public_id: any; }) => {
+                    console.log(item)
+                    return item.public_id !== public_id
+                })
+
+                console.log('filterImages', filterImages)
+                setForm({
+                    ...form,
+                    images: filterImages
+                })
+                toast.error(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+    return (
+        <div className='my-4'>
+            <div className='flex mx-4 gap-4 my-4'>
+                {
+                    isLoading && <Loader className='w-16 h-16 animate-spin'/>
+                }
+                
+                {/* Image */}
+                {
+                    form.images.map((item: { url: string | undefined; public_id: any; }, index: Key | null | undefined) =>
+                        <div className='relative' key={index}>
+                            <img
+                                className='w-24 h-24 hover:scale-105'
+                                src={item.url} />
+
+                            <span
+                                onClick={() => handleDelete(item.public_id)}
+                                className='absolute top-0 right-0 bg-red-500 p-1 rounded-md'>X</span>
+                        </div>
+                    )
+                }
+            </div>
+
+            <div>
+                <input
+                    onChange={handleOnChange}
+                    type='file'
+                    name='images'
+                    multiple
+                />
+            </div>
+
+        </div>
+    )
 }
 
-export default UploadFile
+export default Uploadfile

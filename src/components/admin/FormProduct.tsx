@@ -49,7 +49,7 @@ const FormProduct = () => {
     // console.log(form);
     try {
       const res = await createProduct(token, form);
-      // console.log(res);
+      console.log(res);
       if (res.status === 200) {
         toast.success("Add Product Success");
         setForm(initialState);

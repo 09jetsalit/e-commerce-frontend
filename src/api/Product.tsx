@@ -45,9 +45,9 @@ export const removeProduct = async(token: string, form: any) => {
 
 export const uploadFiles = async (token: any, form: any) => {
     // code
-    // console.log('form api frontent', form)
+    console.log('form api frontent', form)
     return axios.post(
-      "http://localhost:5001/api/images",
+      "http://localhost:3000/api/images",
       {
         image: form,
       },
@@ -59,21 +59,21 @@ export const uploadFiles = async (token: any, form: any) => {
     );
   };
   
-//   export const removeFiles = async (token, public_id) => {
-//     // code
-//     // console.log('form api frontent', form)
-//     return axios.post(
-//       "http://localhost:5001/api/removeimages",
-//       {
-//         public_id,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//   };
+  export const removeFiles = async (token: any, public_id: any) => {
+    // code
+    // console.log('form api frontent', form)
+    return axios.post(
+      "http://localhost:3000/api/removeimages",
+      {
+        public_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
   
 //   export const searchFilters = async (arg) => {
 //     // code body
