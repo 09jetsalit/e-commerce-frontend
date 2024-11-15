@@ -19,16 +19,16 @@ export const listProduct = async(token: string, count: number) => {
     })
 }
 
-export const readProduct = async(token: string, form: any) => {
-    return axios.post('http://localhost:3000/api/product', form, {
+export const readProduct = async(token: string, id: any) => {
+    return axios.get('http://localhost:3000/api/product'+id, {
         headers: {
             Authorization: `Bearer ${token}`
         }
     })
 }
 
-export const updateProduct = async(token: string, form: any) => {
-    return axios.post('http://localhost:3000/api/product', form, {
+export const updateProduct = async(token: string,id:any, form: any) => {
+    return axios.put('http://localhost:3000/api/product'+id, form, {
         headers: {
             Authorization: `Bearer ${token}`
         }
